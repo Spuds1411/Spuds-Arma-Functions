@@ -84,7 +84,7 @@ if (_strength == "WEAK") then {
 
 	[_transportTruckGroup, _toPosition, 0, "TR UNLOAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
 	private _returnWaypoint = [_transportTruckGroup, _transportTruckPos, 5, "MOVE", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
-	[_transportSquad, _spawnPos, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+	[_transportSquad, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
 
 	_codeString = toString {
     	if !(local this) exitWith {};
