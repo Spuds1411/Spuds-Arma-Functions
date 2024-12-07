@@ -70,39 +70,40 @@ if (_isArray == false) then {
 	_spawnPos = [_fromPosition, 0, 25, 5] call BIS_fnc_findSafePos;
 };
 
-if (_strength == "WEAK") then {
-	private _transportTruckPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
-	private _transportTruckArray = [_transportTruckPos, 0, _transportTruckClassname, _side] call BIS_fnc_spawnVehicle;
-	private _transportTruck = _transportTruckArray select 0;
-	private _transportTruckCrew = _transportTruckArray select 1;
-	private _transportTruckGroup = _transportTruckArray select 2;
+switch (_strength) do {
+	case "WEAK": {
+		private _transportTruckPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
+		private _transportTruckArray = [_transportTruckPos, 0, _transportTruckClassname, _side] call BIS_fnc_spawnVehicle;
+		private _transportTruck = _transportTruckArray select 0;
+		private _transportTruckCrew = _transportTruckArray select 1;
+		private _transportTruckGroup = _transportTruckArray select 2;
 
-	private _transportSquad = [_toPosition, _side, _infSquadConfig] call BIS_fnc_spawnGroup;
-	{
-		_x moveInCargo _transportTruck;
-	} forEach (units _transportSquad);
+		private _transportSquad = [_toPosition, _side, _infSquadConfig] call BIS_fnc_spawnGroup;
+		{
+			_x moveInCargo _transportTruck;
+		} forEach (units _transportSquad);
 
-	[_transportTruckGroup, _toPosition, 0, "TR UNLOAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
-	private _returnWaypoint = [_transportTruckGroup, _transportTruckPos, 5, "MOVE", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
-	[_transportSquad, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+		[_transportTruckGroup, _toPosition, 0, "TR UNLOAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+		private _returnWaypoint = [_transportTruckGroup, _transportTruckPos, 5, "MOVE", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+		[_transportSquad, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
 
-	_codeString = toString {
-    	if !(local this) exitWith {};
-    	deleteVehicle vehicle this;
-    	thisList apply {deleteVehicle _x};
-	};
+		_deleteVehicle = toString {
+    		if !(local this) exitWith {};
+    		deleteVehicle vehicle this;
+    		thisList apply {deleteVehicle _x};
+		};
 
-	_returnWaypoint setWaypointStatements ["true", _codeString];
+		_returnWaypoint setWaypointStatements ["true", _deleteVehicle];
 
-	private _mrapArmedPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
-	private _mrapArmedArray = [_mrapArmedPos, 0, _mrapArmedClassname, _side] call BIS_fnc_spawnVehicle;
-	private _mrapArmed = _mrapArmedArray select 0;
-	private _mrapArmedCrew = _mrapArmedArray select 1;
-	private _mrapArmedGroup = _mrapArmedArray select 2;
+		private _mrapArmedPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
+		private _mrapArmedArray = [_mrapArmedPos, 0, _mrapArmedClassname, _side] call BIS_fnc_spawnVehicle;
+		private _mrapArmed = _mrapArmedArray select 0;
+		private _mrapArmedCrew = _mrapArmedArray select 1;
+		private _mrapArmedGroup = _mrapArmedArray select 2;
 
-	[_mrapArmedGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
-} else {
-	if (_strength == "AVERAGE") then {
+		[_mrapArmedGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+		}; 
+	case "AVERAGE": {
 		private _ifvPos0 = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
 		private _ifvArray0 = [_ifvPos0, 0, _ifvClassname, _side] call BIS_fnc_spawnVehicle;
 		private _ifv0 = _ifvArray0 select 0;
@@ -117,24 +118,21 @@ if (_strength == "WEAK") then {
 
 		[_ifvGroup0, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
 		[_ifvGroup1, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
-	} else {
-		if (_strength == "STRONG") then {
-			private _tankPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
-			private _tankArray = [_tankPos, 0, _tankClassname, _side] call BIS_fnc_spawnVehicle;
-			private _tank = _tankArray select 0;
-			private _tankCrew = _tankArray select 1;
-			private _tankGroup = _tankArray select 2;
+	}; 
+	case "STRONG": {
+		private _tankPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
+		private _tankArray = [_tankPos, 0, _tankClassname, _side] call BIS_fnc_spawnVehicle;
+		private _tank = _tankArray select 0;
+		private _tankCrew = _tankArray select 1;
+		private _tankGroup = _tankArray select 2;
 
-			private _ifvPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
-			private _ifvArray = [_ifvPos, 0, _ifvClassname, _side] call BIS_fnc_spawnVehicle;
-			private _ifv = _ifvArray select 0;
-			private _ifvCrew = _ifvArray select 1;
-			private _ifvGroup = _ifvArray select 2;
+		private _ifvPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
+		private _ifvArray = [_ifvPos, 0, _ifvClassname, _side] call BIS_fnc_spawnVehicle;
+		private _ifv = _ifvArray select 0;
+		private _ifvCrew = _ifvArray select 1;
+		private _ifvGroup = _ifvArray select 2;
 
-			[_tankGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
-			[_ifvGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
-		} else {
-			hint "That 'Aggressiveness' does not exist";
-		};
+		[_tankGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+		[_ifvGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
 	};
 };
