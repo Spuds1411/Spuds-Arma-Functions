@@ -13,11 +13,11 @@
 		3: String - (optional, default "BLU_F") Faction the attack will use assets from. Given as the Factions classname (MUST be defined under scripts\initFactions).
 
 	Returns:
-		Array - Array of vehicles in the counter attack.
+		Array - Array of units in the counter attack.
 
 	Examples:
-		["WEAK", getPos player, 1000, "OPF_F", east] call SPD_fnc_counterAttack;
-		["AVERAGE", [4353.37,16523.6,0], [5879.41,16185.8,0], "IND_F", independent] call SPD_fnc_counterAttack;
+		["WEAK", getPos player, 1000, "OPF_F"] call SPD_fnc_counterAttack;
+		["AVERAGE", [4353.37,16523.6,0], [5879.41,16185.8,0], "IND_F"] call SPD_fnc_counterAttack;
 */
 
 // vvv Params vvv
@@ -30,6 +30,7 @@ params [
 ];
 
 private "_spawnPos";
+private _attackArray = [];
 
 // vvv Convert faction classname to variable vvv
 
@@ -102,6 +103,10 @@ switch (_strength) do {
 		private _mrapArmedGroup = _mrapArmedArray select 2;
 
 		[_mrapArmedGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+
+		{
+			_attackArray append [_x];
+		} forEach [units _transportTruckGroup, units _transportSquad, units _mrapArmedGroup];
 		}; 
 	case "AVERAGE": {
 		private _ifvPos0 = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
@@ -118,6 +123,10 @@ switch (_strength) do {
 
 		[_ifvGroup0, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
 		[_ifvGroup1, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+
+		{
+			_attackArray append [_x];
+		} forEach [units _ifvGroup0, units _ifvGroup1];
 	}; 
 	case "STRONG": {
 		private _tankPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
@@ -134,5 +143,10 @@ switch (_strength) do {
 
 		[_tankGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
 		[_ifvGroup, _toPosition, 0, "SAD", "AWARE", "YELLOW"] call CBA_fnc_addWaypoint;
+
+		{
+			_attackArray append [_x];
+		} forEach [units _tankGroup, units _ifvGroup];
 	};
+	_attackArray;
 };
