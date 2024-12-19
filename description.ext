@@ -2,9 +2,22 @@ class CfgFunctions
 {
 	class SPD
 	{
+		class SPD_civilians
+		{
+			class civilianInit
+			{
+				postInit = 1;
+			};
+		};
+
 		class SPD_counterAttack
 		{
 			class counterAttack {};
+		};
+
+		class SPD_logistics
+		{
+			class logisticsInit {};
 		};
 	};
 };
