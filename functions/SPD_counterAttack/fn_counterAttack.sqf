@@ -13,7 +13,7 @@
 		3: String - (optional, default "BLU_F") Faction the attack will use assets from. Given as the Factions classname (MUST be defined under scripts\initFactions).
 
 	Returns:
-		Array - Array of units in the counter attack.
+		Array - Array of group leaders in the counter attack.
 
 	Examples:
 		["WEAK", getPos player, 1000, "OPF_F"] call SPD_fnc_counterAttack;
@@ -79,7 +79,7 @@ switch (_strength) do {
 		private _transportTruckCrew = _transportTruckArray select 1;
 		private _transportTruckGroup = _transportTruckArray select 2;
 
-		private _transportSquad = [_toPosition, _side, _infSquadConfig] call BIS_fnc_spawnGroup;
+		private _transportSquad = [_fromPosition, _side, _infSquadConfig] call BIS_fnc_spawnGroup;
 		{
 			_x moveInCargo _transportTruck;
 		} forEach (units _transportSquad);
@@ -106,7 +106,7 @@ switch (_strength) do {
 
 		{
 			_attackArray append [_x];
-		} forEach [units _transportTruckGroup, units _transportSquad, units _mrapArmedGroup];
+		} forEach [leader _transportTruckGroup, leader _transportSquad, leader _mrapArmedGroup];
 		}; 
 	case "AVERAGE": {
 		private _ifvPos0 = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
@@ -126,7 +126,7 @@ switch (_strength) do {
 
 		{
 			_attackArray append [_x];
-		} forEach [units _ifvGroup0, units _ifvGroup1];
+		} forEach [leader _ifvGroup0, leader _ifvGroup1];
 	}; 
 	case "STRONG": {
 		private _tankPos = [_spawnPos, 0, 25, 5] call BIS_fnc_findSafePos;
@@ -146,7 +146,8 @@ switch (_strength) do {
 
 		{
 			_attackArray append [_x];
-		} forEach [units _tankGroup, units _ifvGroup];
+		} forEach [leader _tankGroup, leader _ifvGroup];
 	};
-	_attackArray;
 };
+
+_attackArray;
