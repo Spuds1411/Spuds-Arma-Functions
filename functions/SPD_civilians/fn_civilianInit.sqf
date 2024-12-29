@@ -38,7 +38,6 @@ _detainAction = {
 				if (side _killer == west) then {
 					removeAllActions _unit;
 					systemChat format ["%1 Killed a civilian (%2)", name _killer, name _unit]
-					// [format ["%1 Killed a civilian (%2)", name _killer, name _unit]] remoteExec ["systemChat", 2];
 				};
 			}];
 		};
